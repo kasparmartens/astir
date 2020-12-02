@@ -317,6 +317,20 @@ class CellTypeModel(AstirModel):
 
         return cell_types[np.argmax(row)]
 
+    def get_mean_expression(self):
+        """
+        Mean expression profile for every cell type
+        (ignore the design matrix which is sample specific, just use the intercept term)
+        """
+
+        # shape [G, C+1]
+        delta = torch.exp(self._variables["log_delta"])
+        # shape [G, 1]
+        intercept = self._variables["mu"][:, 0:1]
+        # shape [G, C+1]
+        mean = torch.exp(intercept + delta)
+        return mean
+
     def get_celltypes(
         self,
         threshold: float = 0.7,
