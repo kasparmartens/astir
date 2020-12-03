@@ -328,7 +328,7 @@ class CellTypeModel(AstirModel):
         # shape [G, 1]
         intercept = self._variables["mu"][:, 0:1]
         # shape [G, C+1]
-        mean = torch.exp(intercept + delta)
+        mean = torch.exp(intercept + delta * self._data["rho"])
         return mean
 
     def get_celltypes(
